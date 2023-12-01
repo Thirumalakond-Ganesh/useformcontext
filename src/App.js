@@ -1,25 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useForm, Controller, useFormContext, FormProvider } from "react-hook-form";
+import "./App.css"; 
 
-function App() {
+const InputA = ({ name }) => {
+  const { control } = useFormContext();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <input {...field} placeholder={`InputA`} />
+      )}
+    />
+  );
+};
+
+const InputB = ({ name }) => {
+  const { control } = useFormContext();
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <input {...field} placeholder={`InputB`} />
+      )}
+    />
+  );
+};
+
+const App = () => {
+  const methods = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <div>
+    <form onSubmit={methods.handleSubmit(onSubmit)}>
+    <h2>UseFormContext</h2>
+      <FormProvider {...methods}>
+        <InputA name="inputA" />
+        <InputB name="inputB" />
+      </FormProvider>
+      <button type="submit">Submit</button>
+    </form>
     </div>
   );
-}
+};
 
 export default App;
